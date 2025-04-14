@@ -401,13 +401,17 @@ class MainWindow(QMainWindow):
             return
         md_path = os.path.join(self.project_path, "mark.md")
         html_path = os.path.join(self.project_path, "index.html")
+
+        
+
         try:
             with open(md_path, "r", encoding="utf-8") as f:
                 md_text = f.read()
         except Exception as e:
             QMessageBox.critical(self, "Erro", f"Não foi possível ler os arquivos: {e}")
             return
-        html_body = markdown.markdown(md_text, extensions=['attr_list','md_in_html'])
+        md_text = md_text.replace("<div", "<div markdown=1") 
+        html_body = markdown.markdown(md_text, extensions=['extra','attr_list','md_in_html'])
         html_template = f"""<!DOCTYPE html>
 <html lang="pt">
 <head>

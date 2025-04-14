@@ -1,0 +1,9 @@
+/* Exemplo de CSS */
+body {
+    background-color: #FFFFFF;
+    color: #00000;
+}
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
