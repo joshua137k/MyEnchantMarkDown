@@ -249,95 +249,13 @@ class CodeEditor(QPlainTextEdit):
                                  Qt.AlignRight, number)
                 # Desenha marcador de folding para blocos dobráveis
                 text = block.text().lstrip()
-                foldable = (self.mode == "css" and "{" in text) or (self.mode == "markdown" and text.startswith("#"))
-                if foldable:
-                    marker_rect = QRect(self.lineNumberArea.width() - 18, top, 16, self.fontMetrics().height())
-                    painter.setPen(QColor("#D4D4D4"))
-                    folded = blockNumber in self.foldedBlocks
-                    if folded:
-                        points = [QPoint(marker_rect.left(), marker_rect.top()),
-                                  QPoint(marker_rect.right(), marker_rect.center().y()),
-                                  QPoint(marker_rect.left(), marker_rect.bottom())]
-                    else:
-                        points = [QPoint(marker_rect.left(), marker_rect.top()),
-                                  QPoint(marker_rect.right(), marker_rect.top()),
-                                  QPoint(marker_rect.center().x(), marker_rect.bottom())]
-                    painter.drawPolygon(QPolygon(points))
+                
             block = block.next()
             top = int(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
             bottom = top + int(self.blockBoundingRect(block).height())
             blockNumber += 1
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton and event.pos().x() < self.lineNumberAreaWidth():
-            block = self.firstVisibleBlock()
-            blockNumber = block.blockNumber()
-            top = int(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
-            bottom = top + int(self.blockBoundingRect(block).height())
-            while block.isValid():
-                if top <= event.pos().y() <= bottom:
-                    text = block.text().lstrip()
-                    foldable = (self.mode == "css" and "{" in text) or (self.mode == "markdown" and text.startswith("#"))
-                    if foldable:
-                        self.toggleFold(block)
-                        return
-                block = block.next()
-                blockNumber += 1
-                top = int(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
-                bottom = top + int(self.blockBoundingRect(block).height())
-        super(CodeEditor, self).mousePressEvent(event)
 
-    def toggleFold(self, block):
-        block_number = block.blockNumber()
-        doc = self.document()
-        cursor = self.textCursor()
-        if block_number in self.foldedBlocks:
-            next_block = block.next()
-            if next_block.isValid() and next_block.text().strip() == "...":
-                cursor.setPosition(next_block.position())
-                cursor.movePosition(QTextCursor.EndOfBlock, QTextCursor.KeepAnchor)
-                cursor.removeSelectedText()
-                cursor.deleteChar()
-            folded_text = self.foldedBlocks.pop(block_number)
-            cursor.setPosition(block.position() + block.length() - 1)
-            cursor.insertBlock()
-            cursor.insertText(folded_text)
-        else:
-            fold_lines = []
-            if self.mode == "markdown":
-                header = block.text().lstrip()
-                level = len(header) - len(header.lstrip('#'))
-                current_block = block.next()
-                while current_block.isValid():
-                    txt = current_block.text()
-                    if txt.lstrip().startswith("#"):
-                        new_level = len(txt.lstrip()) - len(txt.lstrip('#'))
-                        if new_level <= level:
-                            break
-                    fold_lines.append(txt)
-                    current_block = current_block.next()
-            elif self.mode == "css":
-                if "{" in block.text():
-                    current_block = block.next()
-                    while current_block.isValid():
-                        txt = current_block.text()
-                        fold_lines.append(txt)
-                        if "}" in txt:
-                            break
-                        current_block = current_block.next()
-            if fold_lines:
-                folded_text = "\n".join(fold_lines)
-                self.foldedBlocks[block.blockNumber()] = folded_text
-                start_pos = block.next().position()
-                end_pos = (current_block.position() + current_block.length() - 1) if current_block.isValid() else doc.characterCount() - 1
-                cursor.setPosition(start_pos)
-                cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
-                cursor.removeSelectedText()
-                cursor.insertBlock()
-                cursor.insertText("...")
-        self.document().adjustSize()
-        self.viewport().update()
-        self.lineNumberArea.update()
 
 ###############################################################################
 # Área de Números de Linha

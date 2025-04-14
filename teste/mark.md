@@ -1,4 +1,4 @@
-# Minha Capa {.cover}
+# JOSHUA È BOM {.cover}
 Uma imagem de destaque: ![Capa](https://lh3.googleusercontent.com/proxy/aAUxwffDmZGAXi4KjBtcGYTGQ0W9FIafRTfYWVzX8HhptgU2buqsjWwEmZxJ8COTYrhFSDrCjN-GP-moRCG1ByhIVP9SKwhdWVX_Adni2QbKRYKRkvEkk0l3RKHEmo0)  
 _Subtítulo Impactante_
 
@@ -14,7 +14,8 @@ Este é o início do documento. Neste texto, explicamos os principais pontos do 
 
 ---
 
-## Desenvolvimento {.content}
+
+...
 Aqui se encontra o conteúdo principal do documento. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vel pulvinar odio. Suspendisse potenti.  
 Nullam hendrerit, metus quis luctus aliquam, lorem libero elementum ex, in fermentum lorem sapien ut erat.
 
@@ -33,11 +34,8 @@ Esta seção descreve a metodologia utilizada para o desenvolvimento do projeto.
 
 ---
 
-## Conclusão {.conclusion}
+
+
 Em resumo, este documento demonstra como utilizar Markdown com a extensão `attr_list` para aplicar classes aos elementos, permitindo um estilo personalizado via CSS.  
 Obrigado por ler este documento!
 
-
-...
-
-...
